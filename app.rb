@@ -15,7 +15,7 @@ bot.command :chars, in: '#bot' do |event, unique|
   else
     event.channel.send_embed do |embed|
       embed.color = 0x1e90ff
-      embed.description = "there are characters for `#{unique}`"
+      embed.description = "characters for `#{unique}`"
 
       characters.map do |character|
         embed.add_field(
