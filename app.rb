@@ -6,7 +6,7 @@ config = YAML.load_file('config.yml')
 bot = Discordrb::Commands::CommandBot.new(token:config['DISCORD_TOKEN'], prefix: ".")
 
 bot.ready{puts 'ready'}
-bot.command :chars, in: '#bot' do |event, unique|
+bot.command [:chars, :c], in: '#bot' do |event, unique|
   characters = HTTP.get("https://tera-lab.appspot.com/user/#{unique}/characters").parse['characters'] rescue []
   if characters.empty?
     event.channel.send_embed do |embed|
