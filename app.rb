@@ -6,8 +6,8 @@ config = YAML.load_file('config.yml')
 bot = Discordrb::Commands::CommandBot.new(token:config['DISCORD_TOKEN'], prefix: ".")
 
 bot.ready{puts 'ready'}
-bot.command [:chars, :c], in: '#bot' do |event, unique|
-  characters = HTTP.get("https://tera-lab.appspot.com/user/#{unique}/characters").parse['characters'] rescue []
+bot.command [:characters, :chars, :c], in: '#bot' do |event, unique|
+  characters = HTTP.get("https://tera-lab.appspot.com/user/#{unique}/characters").parse()['characters'] rescue []
   if characters.empty?
     event.channel.send_embed do |embed|
       embed.color = 0xff4757
@@ -20,8 +20,8 @@ bot.command [:chars, :c], in: '#bot' do |event, unique|
 
       characters.map do |character|
         embed.add_field(
-          name: bot.find_emoji(character['job']),
-          value: character['name'],
+          name: bot.find_emoji(character['job']).to_s + character['name'],
+          value: "Last Login: #{character['last_login'] || 'null'}",
           inline: true
         )
       end
