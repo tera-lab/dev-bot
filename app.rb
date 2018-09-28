@@ -16,12 +16,20 @@ class Discordrb::Events::MessageEvent
         embed.add_field(name: 'Unique', value: user['unique'], inline: true)
         embed.add_field(name: 'MAC', value: user['mac'], inline: true)
 
-        if !user['mods'].empty?
-          embed.add_field(name: 'Mods', value: user['mods'].join(' | '))
+        mods = user['mods']
+        if !mods.empty?
+          items = []
+          ('A'..'Z').to_a.each do |i|
+            targets = mods.select{|mod|mod.upcase.start_with?(i)}
+            if !targets.empty?
+              items << "__**#{i}**__\r#{targets.join(', ')}"
+            end
+          end
+          embed.add_field(name: "Mods(#{mods.size})", value: items.join("\r"))
         end
 
         characters = user['characters'].map do |character|
-          bot.find_emoji(character['job']).to_s() + character['name']
+          bot.find_emoji(character['job']).to_s + character['name']
         end
         embed.add_field(name: "Characters(#{characters.size})", value: characters.join(', '))
       end
