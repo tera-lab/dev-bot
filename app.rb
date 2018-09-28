@@ -17,7 +17,7 @@ class Discordrb::Events::MessageEvent
         embed.add_field(name: 'MAC', value: user['mac'], inline: true)
 
         if !user['mods'].empty?
-          embed.add_field(name: 'Mods', value: user['mods'].map{|mod| "- #{mod}"}.join("\r"))
+          embed.add_field(name: 'Mods', value: user['mods'].join(' | '))
         end
 
         characters = user['characters'].map do |character|
