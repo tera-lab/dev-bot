@@ -20,8 +20,10 @@ class Discordrb::Events::MessageEvent
           embed.add_field(name: 'Mods', value: user['mods'].map{|mod| "- #{mod}"}.join("\r"))
         end
 
-        characters = user['characters'].map{|character| bot.find_emoji(character['job']).to_s + character['name']}.join(', ')
-        embed.add_field(name: "Characters(#{characters.size})", value: characters)
+        characters = user['characters'].map do |character|
+          bot.find_emoji(character['job']).to_s() + character['name']
+        end
+        embed.add_field(name: "Characters(#{characters.size})", value: characters.join(', '))
       end
     when 404
       self.channel.send_embed do |embed|
