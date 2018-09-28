@@ -13,20 +13,15 @@ class Discordrb::Events::MessageEvent
       self.channel.send_embed do |embed|
         embed.color = 0x1e90ff
 
-        embed.add_field(name: 'Unique', value: user['unique'])
-        embed.add_field(name: 'MAC', value: user['mac'])
+        embed.add_field(name: 'Unique', value: user['unique'], inline: true)
+        embed.add_field(name: 'MAC', value: user['mac'], inline: true)
 
         if !user['mods'].empty?
-          embed.add_field(name: 'Mods', value: user['mods'].join(", "))
+          embed.add_field(name: 'Mods', value: user['mods'].map{|mod| "- #{mod}"}.join("\r"))
         end
 
-        user['characters'].map do |character|
-          embed.add_field(
-            name: bot.find_emoji(character['job']).to_s + character['name'],
-            value: "Last Login: #{character['last_login'] || 'null'}",
-            inline: true
-          )
-        end
+        characters = user['characters'].map{|character| bot.find_emoji(character['job']).to_s + character['name']}.join(', ')
+        embed.add_field(name: "Characters(#{characters.size})", value: characters)
       end
     when 404
       self.channel.send_embed do |embed|
