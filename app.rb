@@ -19,11 +19,13 @@ class Discordrb::Events::MessageEvent
         mods = user['mods']
         if !mods.empty?
           items = []
+
           ('A'..'Z').to_a.each do |i|
-            targets = mods.select{|mod|mod.upcase.start_with?(i)}
-            if !targets.empty?
-              items << "__**#{i}**__\r#{targets.join(', ')}"
-            end
+            targets = mods
+              .select{|mod|mod.upcase.start_with?(i)}
+              .map{|mod|mod.split("\t")[0]}
+
+            items << "__**#{i}**__\r#{targets.join(', ')}" if !targets.empty?
           end
           embed.add_field(name: "Mods(#{mods.size})", value: items.join("\r"))
         end
